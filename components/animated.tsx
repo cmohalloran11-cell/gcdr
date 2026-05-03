@@ -1,14 +1,19 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { createElement, useEffect, useRef, useState } from "react";
 
 /* -----------------------------------------------------------
-   Reveal — wraps children in a div that fades + slides up
-   when it scrolls into view. Uses IntersectionObserver.
+   Reveal — wraps children in an element that fades + slides
+   up when it scrolls into view. Uses IntersectionObserver.
    `as` lets you change the element so it doesn't break
-   layout (e.g. inside flex parents that expect a specific
-   tag).
+   layout (e.g. inside parents that expect a specific tag).
+
+   Implemented with React.createElement instead of dynamic
+   JSX to avoid the "union type too complex to represent"
+   error from TS in production builds.
    ----------------------------------------------------------- */
+type RevealTag = "div" | "section" | "article" | "li" | "figure";
+
 export function Reveal({
   children,
   delay = 0,
@@ -18,9 +23,9 @@ export function Reveal({
   children: React.ReactNode;
   delay?: number;
   className?: string;
-  as?: "div" | "section" | "article" | "li" | "figure";
+  as?: RevealTag;
 }) {
-  const ref = useRef<HTMLDivElement | null>(null);
+  const ref = useRef<HTMLElement | null>(null);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -45,16 +50,14 @@ export function Reveal({
     return () => obs.disconnect();
   }, []);
 
-  const Tag = as as keyof JSX.IntrinsicElements;
-  return (
-    // @ts-expect-error - dynamic tag w/ ref is fine here
-    <Tag
-      ref={ref}
-      className={`reveal ${visible ? "reveal-in" : ""} ${className}`}
-      style={{ transitionDelay: `${delay}ms` }}
-    >
-      {children}
-    </Tag>
+  return createElement(
+    as,
+    {
+      ref,
+      className: `reveal ${visible ? "reveal-in" : ""} ${className}`.trim(),
+      style: { transitionDelay: `${delay}ms` },
+    },
+    children,
   );
 }
 
