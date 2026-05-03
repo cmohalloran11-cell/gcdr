@@ -1,0 +1,243 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+  /* Fixed nav is 68px tall — keep section tops clear of it
+     when anchor links land. */
+  scroll-padding-top: 80px;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Editorial helpers */
+.caps {
+  text-transform: uppercase;
+  letter-spacing: 0.20em;
+  font-weight: 500;
+}
+
+/* Hairline rule — used as section dividers */
+.hairline {
+  height: 1px;
+  background-color: theme("colors.rule");
+}
+.hairline-b { border-bottom: 1px solid theme("colors.rule"); }
+.hairline-t { border-top: 1px solid theme("colors.rule"); }
+
+.tnum { font-variant-numeric: tabular-nums; }
+
+/* Warm, slightly desaturated photo treatment for consistency */
+.photo-tone {
+  filter: saturate(0.86) contrast(1.03) brightness(0.99);
+}
+
+/* Tiny tick mark used in lists in place of bullets */
+.tick::before {
+  content: "";
+  display: inline-block;
+  width: 14px;
+  height: 1px;
+  background-color: theme("colors.brass");
+  vertical-align: middle;
+  margin-right: 14px;
+  position: relative;
+  top: -2px;
+}
+
+/* ---------------- Form input baseline ---------------- */
+.input-base {
+  width: 100%;
+  background-color: theme("colors.bone");
+  border: 0;
+  border-bottom: 1px solid theme("colors.rule");
+  padding: 14px 0;
+  font-family: theme("fontFamily.sans");
+  font-size: 0.95rem;
+  color: theme("colors.graphite");
+  transition: border-color 200ms ease;
+}
+.input-base:focus { outline: none; border-bottom-color: theme("colors.brass"); }
+.input-base::placeholder { color: theme("colors.ash"); }
+
+/* ===========================================================
+   ANIMATIONS
+   =========================================================== */
+
+/* ---- Scroll-reveal: fade up + settle ---- */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 900ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 900ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  will-change: opacity, transform;
+}
+.reveal-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* ---- Hairline grow — a section divider that draws itself
+   from left to right on reveal. Used as section delimiter. ---- */
+.rule-draw {
+  position: relative;
+  height: 1px;
+  background-color: transparent;
+  overflow: hidden;
+}
+.rule-draw::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: theme("colors.rule");
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform 1200ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.reveal-in .rule-draw::after,
+.rule-draw.reveal-in::after { transform: scaleX(1); }
+
+/* ---- Paint sweep — a brass-colored highlight band glides
+   across heading text on load, like light catching on freshly
+   polished paint. CSS-only via background-clip:text.
+   Both the base and highlight colors are dark enough to read
+   against the bone background, so the text stays legible
+   throughout the sweep. ---- */
+.paint-sweep {
+  background-image: linear-gradient(
+    100deg,
+    theme("colors.ink") 0%,
+    theme("colors.ink") 35%,
+    theme("colors.brass") 47%,
+    #d6a366 50%,                /* warm copper highlight crest */
+    theme("colors.brass") 53%,
+    theme("colors.ink") 65%,
+    theme("colors.ink") 100%
+  );
+  background-size: 220% 100%;
+  background-position: 100% 0;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: paint-sweep 1900ms cubic-bezier(0.4, 0, 0.2, 1) 250ms 1 forwards;
+}
+@keyframes paint-sweep {
+  0%   { background-position: 100% 0; }   /* band off-screen right */
+  100% { background-position: 0% 0; }     /* band has swept left-to-right */
+}
+@media (prefers-reduced-motion: reduce) {
+  .paint-sweep {
+    animation: none;
+    background: none;
+    color: theme("colors.ink");
+    -webkit-text-fill-color: theme("colors.ink");
+  }
+}
+
+/* The italic "Paint preserved." line gets a slightly slower
+   pass — a longer glint, like the polish settling. */
+.paint-sweep-slow {
+  animation-duration: 2800ms;
+  animation-delay: 700ms;
+}
+
+/* ---- Paint gloss strip — used on work-photo cards. A
+   soft diagonal band of light slides across the photo on
+   hover, evoking the moment light catches a finished panel.
+   ---- */
+.paint-gloss {
+  position: relative;
+  overflow: hidden;
+}
+.paint-gloss-strip {
+  position: absolute;
+  top: -50%;
+  left: -75%;
+  width: 60%;
+  height: 200%;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0) 35%,
+    rgba(255, 245, 225, 0.42) 50%,
+    rgba(255, 255, 255, 0) 65%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-14deg) translateX(0);
+  opacity: 0;
+  transition:
+    opacity 200ms ease,
+    transform 1200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.paint-gloss:hover .paint-gloss-strip {
+  opacity: 1;
+  transform: skewX(-14deg) translateX(360%);
+}
+
+/* Subtle photo zoom on hover — the panel "leans in" */
+.paint-gloss img {
+  transition: transform 1400ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.paint-gloss:hover img {
+  transform: scale(1.025);
+}
+
+/* ---- Brand wordmark underline — brass underline that
+   draws on hover. Used in the nav for craft-trade feel. ---- */
+.uline {
+  position: relative;
+}
+.uline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 1px;
+  background-color: theme("colors.brass");
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform 380ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.uline:hover::after { transform: scaleX(1); }
+
+/* ---- CTA arrow — the em-dash slides forward on hover ---- */
+.cta-arrow span {
+  display: inline-block;
+  transition: transform 320ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.cta-arrow:hover span {
+  transform: translateX(4px);
+}
+
+/* ---- Hero photo: slow Ken-Burns drift so the still image
+   has a sense of motion. Subtle — a few percent over 22s. ---- */
+.hero-photo {
+  animation: hero-drift 22s ease-in-out infinite alternate;
+  transform-origin: 60% 50%;
+}
+@keyframes hero-drift {
+  0%   { transform: scale(1.04) translate3d(0, 0, 0); }
+  100% { transform: scale(1.08) translate3d(-1.2%, -0.8%, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-photo { animation: none; transform: scale(1.04); }
+}
+
+/* ---- Stat numerals — gentle settle on reveal ---- */
+.stat-num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
