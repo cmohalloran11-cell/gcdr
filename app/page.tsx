@@ -127,7 +127,24 @@ export default function Page() {
 
         <div className="relative z-10 mx-auto max-w-6xl px-6 lg:px-10 w-full">
           <div className="max-w-2xl">
+            {/* GCDR brand wordmark — Rob's actual logo (three muscle
+                cars cut into the letters over a stormy skyline).
+                Kept small so it reads as a brand mark, not a hero
+                centerpiece — the editorial typography does the
+                heavy lifting below. */}
             <Reveal>
+              <div className="mb-7 inline-block">
+                <Image
+                  src="/photos/gcdr-wordmark.jpg"
+                  alt="Gulf Coast Dent Removal — GCDR wordmark"
+                  width={320}
+                  height={180}
+                  priority
+                  className="h-16 sm:h-20 w-auto object-contain"
+                />
+              </div>
+            </Reveal>
+            <Reveal delay={150}>
               <p className="caps text-[0.7rem] text-umber mb-6">
                 Paintless Dent Repair · Spring Hill, FL
               </p>
