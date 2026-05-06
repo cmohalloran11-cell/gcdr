@@ -131,7 +131,15 @@ export default function Page() {
                 cars cut into the letters over a stormy skyline).
                 Kept small so it reads as a brand mark, not a hero
                 centerpiece — the editorial typography does the
-                heavy lifting below. */}
+                heavy lifting below.
+
+                The source image has a baked-in dark background
+                (no alpha channel). mix-blend-mode: screen on the
+                bone page background dissolves the dark sky into
+                bone while keeping the white letter outlines and
+                the lighter car details inside the letters visible.
+                Effectively a transparent-PNG result without needing
+                to re-author the asset. */}
             <Reveal>
               <div className="mb-7 inline-block">
                 <Image
@@ -140,7 +148,7 @@ export default function Page() {
                   width={320}
                   height={180}
                   priority
-                  className="h-16 sm:h-20 w-auto object-contain"
+                  className="h-16 sm:h-20 w-auto object-contain mix-blend-multiply [filter:invert(1)_hue-rotate(180deg)]"
                 />
               </div>
             </Reveal>
