@@ -134,16 +134,15 @@ export default function Page() {
                 screens without crowding the editorial typography
                 on wide screens. */}
             <Reveal>
-              <div className="relative mb-6 inline-block lg:hidden">
+              <div className="mb-6 inline-block lg:hidden">
                 <Image
                   src="/photos/gcdr-wordmark.png"
                   alt="Gulf Coast Dent Removal — GCDR wordmark"
                   width={520}
                   height={200}
                   priority
-                  className="h-14 w-auto object-contain block"
+                  className="h-14 w-auto object-contain"
                 />
-                <div className="rain-overlay" aria-hidden />
               </div>
             </Reveal>
             <Reveal delay={150}>
@@ -214,17 +213,14 @@ export default function Page() {
               Hidden on mobile/tablet where the small version
               above the eyebrow handles brand presence. */}
           <Reveal as="div" className="hidden lg:flex lg:col-span-5 items-center justify-center" delay={400}>
-            <div className="relative w-full max-w-[440px] aspect-[666/375] drop-shadow-[0_8px_24px_rgba(31,29,27,0.18)]">
-              <Image
-                src="/photos/gcdr-wordmark.png"
-                alt="Gulf Coast Dent Removal — GCDR wordmark"
-                fill
-                priority
-                sizes="(min-width: 1024px) 440px, 0px"
-                className="object-contain"
-              />
-              <div className="rain-overlay" aria-hidden />
-            </div>
+            <Image
+              src="/photos/gcdr-wordmark.png"
+              alt="Gulf Coast Dent Removal — GCDR wordmark"
+              width={1332}
+              height={750}
+              priority
+              className="w-full max-w-[440px] h-auto object-contain drop-shadow-[0_8px_24px_rgba(31,29,27,0.18)]"
+            />
           </Reveal>
         </div>
       </section>
