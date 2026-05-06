@@ -125,24 +125,23 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="relative z-10 mx-auto max-w-6xl px-6 lg:px-10 w-full">
-          <div className="max-w-2xl">
-            {/* GCDR brand wordmark — Rob's actual logo (three muscle
-                cars cut into the GCDR letterforms). Source is a
-                proper transparent PNG cut from the Facebook upload,
-                so it sits cleanly on the bone background with no
-                rectangular artifact. Sized small so it reads as a
-                brand mark, not a hero centerpiece — the editorial
-                typography below still does the visual work. */}
+        <div className="relative z-10 mx-auto max-w-6xl px-6 lg:px-10 w-full grid grid-cols-12 gap-8 lg:gap-12 items-center">
+          {/* LEFT COLUMN — text content */}
+          <div className="col-span-12 lg:col-span-7">
+            {/* GCDR brand wordmark — small, mobile/tablet only.
+                Hidden on lg+ where the larger version lives in the
+                right column. Keeps the brand visible on narrow
+                screens without crowding the editorial typography
+                on wide screens. */}
             <Reveal>
-              <div className="mb-6 inline-block">
+              <div className="mb-6 inline-block lg:hidden">
                 <Image
                   src="/photos/gcdr-wordmark.png"
                   alt="Gulf Coast Dent Removal — GCDR wordmark"
                   width={520}
                   height={200}
                   priority
-                  className="h-14 sm:h-20 w-auto object-contain"
+                  className="h-14 w-auto object-contain"
                 />
               </div>
             </Reveal>
@@ -205,6 +204,24 @@ export default function Page() {
               </div>
             </Reveal>
           </div>
+
+          {/* RIGHT COLUMN — large GCDR wordmark, desktop only.
+              Floats over the lit shop sign photo behind it; the
+              transparent PNG lets the photo show through the
+              negative space around the letterforms. Subtle drop
+              shadow gives it lift off the bone background.
+              Hidden on mobile/tablet where the small version
+              above the eyebrow handles brand presence. */}
+          <Reveal as="div" className="hidden lg:flex lg:col-span-5 items-center justify-center" delay={400}>
+            <Image
+              src="/photos/gcdr-wordmark.png"
+              alt="Gulf Coast Dent Removal — GCDR wordmark"
+              width={1332}
+              height={750}
+              priority
+              className="w-full max-w-[440px] h-auto object-contain drop-shadow-[0_8px_24px_rgba(31,29,27,0.18)]"
+            />
+          </Reveal>
         </div>
       </section>
 
