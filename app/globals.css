@@ -241,3 +241,56 @@ body {
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum";
 }
+
+/* ---- Rain inside the GCDR wordmark ----
+   Two parallax layers of diagonal rain streaks, masked to the
+   shape of the GCDR PNG so the rain only appears within the
+   letterforms. Layered on top of the logo image to make the
+   already-baked-in rain look like it's actually falling.
+   The two layers animate at different shift distances per
+   cycle so they appear to fall at different speeds — gives
+   the rain depth.
+   ---- */
+.rain-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    /* layer 1: foreground — thicker, brighter streaks */
+    repeating-linear-gradient(
+      100deg,
+      transparent 0,
+      transparent 13px,
+      rgba(255, 255, 255, 0.55) 13px,
+      rgba(255, 255, 255, 0.55) 15px
+    ),
+    /* layer 2: background — finer, dimmer streaks */
+    repeating-linear-gradient(
+      98deg,
+      transparent 0,
+      transparent 7px,
+      rgba(255, 255, 255, 0.28) 7px,
+      rgba(255, 255, 255, 0.28) 8px
+    );
+  background-size: auto, auto;
+  -webkit-mask-image: url("/photos/gcdr-wordmark.png");
+          mask-image: url("/photos/gcdr-wordmark.png");
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+  -webkit-mask-position: center;
+          mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  mix-blend-mode: screen;
+  animation: rain-fall 720ms linear infinite;
+  will-change: background-position;
+}
+
+@keyframes rain-fall {
+  from { background-position: 0 0,   0 0;    }
+  to   { background-position: 0 -110px, 0 -180px; } /* different shift distances → parallax */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rain-overlay { animation: none; }
+}
