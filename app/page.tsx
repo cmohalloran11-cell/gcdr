@@ -127,14 +127,26 @@ export default function Page() {
 
         <div className="relative z-10 mx-auto max-w-6xl px-6 lg:px-10 w-full">
           <div className="max-w-2xl">
-            {/* Note: Rob's GCDR muscle-car wordmark was tested here
-                but pulled — the asset has a baked-in stormy
-                background and reads as visually out-of-place
-                against the editorial craftsman aesthetic. If a
-                proper transparent PNG version is provided, it can
-                be re-added at /photos/gcdr-wordmark.png and shown
-                small above the eyebrow. */}
+            {/* GCDR brand wordmark — Rob's actual logo (three muscle
+                cars cut into the GCDR letterforms). Source is a
+                proper transparent PNG cut from the Facebook upload,
+                so it sits cleanly on the bone background with no
+                rectangular artifact. Sized small so it reads as a
+                brand mark, not a hero centerpiece — the editorial
+                typography below still does the visual work. */}
             <Reveal>
+              <div className="mb-6 inline-block">
+                <Image
+                  src="/photos/gcdr-wordmark.png"
+                  alt="Gulf Coast Dent Removal — GCDR wordmark"
+                  width={520}
+                  height={200}
+                  priority
+                  className="h-14 sm:h-20 w-auto object-contain"
+                />
+              </div>
+            </Reveal>
+            <Reveal delay={150}>
               <p className="caps text-[0.7rem] text-umber mb-6">
                 Paintless Dent Repair · Spring Hill, FL
               </p>
